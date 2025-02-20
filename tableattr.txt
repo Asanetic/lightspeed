@@ -1,0 +1,140 @@
+<?php 
+$desired_column_order=[
+    'pety_cash_post' => ['primkey','postkey', 'date_posted', 'amount_posted','posting_remark','posted_by'],
+
+];
+
+
+
+if(!isset($custom_list_col_data_))
+{
+$custom_list_col_data_=[
+  
+  "messages_sent"=>"date('d-m-Y H:i')",
+  'contact_count_red_rum'=>"?",
+];
+}
+
+if(!isset($custom_query_line_cols))
+{
+$custom_query_line_cols=[
+  'contact_count_red_rum'=>"count_send_list(\\\"send_list_name='\\\".\\\$data_res['send_list_name'].\\\"' and entry_context='Contact'\\\")",  
+];
+}
+$file_prefix="";
+$overwrite_existing_file ='yes'; // yes || no
+
+
+$write_files_only='yes'; // yes || no
+$write_button_link_only='';  // yes || no
+$default_icon='minus';
+$use_pop_tray="yes";
+$andquote="&";
+$trim_text_size=70;
+$textarea_name='textarea';
+///
+$user_acc_table=['note_admin'=>'notes_admin:Admin account:user_id:note_sess'];
+
+///column handlers
+$image_cols_array=['receipt_file','imageurl','post_photo','company_logo', 'pic_url', 'profile_photo','admin_pic', 'imgurl', 'photo', 'post_image', 'file_url','passport_photo', 'user_pic', 'post_img','pic','section_pic','member_photo','profile_pic','tr_lessonimg','author_pic','cover_image','tr_matlink', 'client_pic'];
+$images_array_str=$image_cols_array;
+$def_col_vals=[];
+
+//// ---hidden profile inputs ---
+$profile_hidden_cols=['last_seen','posted_by','date_updated','admin_id','site_id','date','month','admin_name','approval_status'];
+
+$print_tables=['petty_cash','pety_cash_post','expenses','clients','inventory_list','transactions',"acc_renewals"];
+
+////---Column condition
+$skip_cols_profile=['course_order','custom_field_6','TransactionType','admin_id','month_year',"approved_date"  , "payment_date" , "ref_no" , "payment_remark" , "admin_remark" , "approved_by" , "amount_paid" , "receipt_file","team_id" , "debit_account" , "credit_account",'account_subcategory'  ];
+
+$running_bal_col_tbl=["petty_cash"=>'balance:{{posted_cash}}- {{used_amount}}'];
+
+
+$grid_tbl_=['inventory_list'];
+
+//skip edit / delete drop down ui
+$skip_file_edits_array=[];
+
+////---Column condition
+$skip_cols_list=['course_order','login_password','month_year'];
+////---Column condition
+$sum_cols_list=['budget','amount','proejct_amount','total_requested','amount_requested','amount_posted'];
+////---Column condition
+$textarea_array=['trx_msg','about','section_content','post','post_keywords','remark','comment','posting_remark', 'request_remark','expense_notes'];
+////---Column condition
+$content_editable=['post_response','note_details','pcont'];
+////---Column condition
+$static_drop_down_array=['user_gender'=>'Male,Female','status'=>'Complete,Pending,Onprogress'];
+////---Column condition
+$dynamic_drop_down_array=['expense_category','account_subcategory','custom_field_6','published','trx_month_year','trx_remark','account_type','tag_name','reason_for_request','vendor'];
+////---Column condition
+$password_col_array=['password','admin_pass','login_password'];
+////---Column condition
+$title_columns=['lesson_name','assign_topic','section_title','post_title','note_title','title','description'];
+////---Column condition
+$date_col_array=['expense_date','project_date','date_of_transaction','regon','date_posted','date_updated','note_date','trx_date','filter_date','trf_date_time','trx_time','date_posted','request_date'];
+////---Column condition
+$datetime_col_array=['regdate','date_created'];
+
+////---Column condition
+$connection_cols=['approved_by'=>'admins:user_id:name','link'=>'page_links:link_id:link_name','owner'=>'app_users:user_id:name','trf_from'=>'accounts:account_id:name','trf_to'=>'accounts:account_id:name','client_id'=>'clients:user_id:name','requested_by'=>'team_tbl:user_id:name','posted_by'=>'system_users:user_id:name'];
+
+////---Column condition
+$rename_cols_array=['client_id'=>'Client','posting_remark'=>'Remark','amount_paid'=>"Amount Used",'receipt_id'=>"Receipt / Doc. No",'date_res'=>"Date"];
+////---Column condition
+
+////---Column condition
+$rename_tables_array=['growth_manifest'=>'Projects','allowances'=>'Staff Allowances:plus','members'=>'Students Register:users','news'=>'Stories:copy','tr_lessons'=>'Course Lesson List:clipboard','workprofile_tbl'=>'Freelance Jobs','pety_cash_post'=>'Posted Petty Cash','petty_cash'=>"Petty cash requests","acc_renewals"=>"Subscription renewals"];
+////---Column condition
+
+
+////============ new button labels
+$new_label_buttons_arr=['growth_manifest'=>'plus-circle:New Project','account_transfers'=>'bank:Add Transfer','transactions'=>'database:Add Transaction', 'accounts'=>'plus:Create Account','clients'=>'user-plus:Add Client','petty_cash'=>'edit:Request petty cash','pety_cash_post'=>'gift:Post Petty cash','expenses'=>"minus-circle:Record Expense"];
+////============ new button labels
+
+
+$ajax_tray_cols=[
+'course_access'=>"primkey,course_id:Course|qcourse_list_data(\\\$data_res[\\'course_id\\'])[\'course_title\'],student_id:Student|qstudents_data(\\\$data_res[\\'student_id\\'])[\'name\'],ref_id:Payments|sum_course_payment(\\\$data_res[\\'student_id\\'].\\'{}\\'.\\\$data_res[\\'course_id\\']),primkey:Course Amt|qcourse_list_data(\\\$data_res[\\'course_id\\'])[\'course_amount\']",
+
+  
+                ];
+/////========= lit ui handlers
+
+if(function_exists('create_list_cards'))
+{
+  $memmber_cards=create_list_cards(['user_list_card'=>['photo_node:profile_pic','node1:name','node2:phone','node3:phone','node4:email']]);
+  $send_list=create_list_cards(['user_long_card'=>['photo_node:photo','node1:project_name','node2:tag_name','node3:status']]);
+  $lesson_materials_template=create_list_cards(['user_long_card'=>['photo_node:tr_matlink','node1:tr_matname','node2:tr_matfomart','node3:tr_mattype']]);
+  $blog_card=create_list_cards(['blog_card__'=>['photo_node:imageurl','node1:title','node2:description','node3:catgry']]);
+  $ebooks=create_list_cards(['blog_card__no_blur'=>['photo_node:cover_image','node1:title','node2:ebook_name','node3:author']]);
+  $lessoncard=create_list_cards(['blog_card__'=>['photo_node:profile_pic','node1:name','node2:email','node3:tel']]);
+  $send_list_card_=create_list_cards(['long_content_card'=>['{{{node1}}}:Group - {{{send_list_name}}}','node2:comment','node3:user_email','col-md-6:col-md-7']]);
+  $comments=create_list_cards(['long_content_card'=>['node1:username','node2:comment','node3:user_email','col-md-6:col-md-7']]);
+  $jobs_board=create_list_cards(['long_content_card'=>['node1:title','node2:instructions','node3:deadline','col-md-6:col-md-8']]);
+
+  $custom_list_ui=['send_lkist'=>$send_list_card_,'ebooks'=>$ebooks,'jobs_board'=>$jobs_board,'memlbers'=>$memmber_cards,'news'=>$blog_card, 'tr_lessonks'=>$lessoncard,'blog_comments'=>$comments,'workprofile_tbl'=>$jobs_board,'reviews'=>$jobs_board];
+
+  $blog_profile_ui_template=create_list_cards(['user_profile_ui'=>['{{profile_pic}}:{{{profile_pic}}}','{{profile_title}}:Student Profile / {{{name}}}']],'988');
+  $news_profile_ui_template=create_list_cards(['blog_profile_ui'=>['{{profile_pic}}:{{imageurl}}','{{profile_title}}:Post Profile / {{{title}}}']],'988');
+  $lesson_profile_ui_template=create_list_cards(['blog_profile_ui'=>['{{profile_pic}}:{{tr_lessonimg}}','{{profile_title}}:{{{tr_lesson_topic}}}']],'988');
+  $user_profile_ui_template=create_list_cards(['user_profile_ui'=>['{{profile_pic}}:{{{photo}}}','{{profile_title}}:{{{project_name}}}']], '988');
+  $plain_profile_ui_template=create_list_cards(['plain_profile_ui'=>['{{profile_title}}:Transaction Profile - {{{trx_remark}}}']], '988');
+  $account_profile_ui_template=create_list_cards(['plain_profile_ui'=>['{{profile_title}}:Account - {{{name}}}']], '988');
+  $client_profile_ui_template=create_list_cards(['user_profile_ui'=>['{{profile_pic}}:{{{user_pic}}}','{{{profile_title}}}:Client Profile - {{{client_name}}}']], '988');
+
+  $custom_profile_ui=['growth_manifest'=>$user_profile_ui_template,'transactions'=>$plain_profile_ui_template,'accounts'=>$account_profile_ui_template, 'blog_authors'=>$user_profile_ui_template, 'clients'=>$client_profile_ui_template];
+
+}
+
+
+///navbar handlers
+$view_tbl_only=['tr_lessons'];
+$navbar_links_array=['apps'=>'bolt', 'keys_n_tokens'=>'users','page_links'=>'link', 'posts'=>'copy','traffic_log'=>'list', 'system_admin'=>'shield'];
+///navbar handlers
+$navlinks_file='../includes/navbar.php';
+$navbar_file_=str_replace('../','./', $navlinks_file);
+  
+$profile_pic_style="width:200px; height:200px; border-radius:50%;";
+
+?>
